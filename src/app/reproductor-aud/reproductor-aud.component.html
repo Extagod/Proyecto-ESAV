@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row">
+    <!-- Columna 1: Listado de sonidos -->
+    <div class="audio-column">
+      <ul class="audio-list">
+        <h1 style="text-align:center">Listado de sonidos</h1>
+        <select (change)="onAudioSelect($event)">
+          <option *ngFor="let audio of audioList" [value]="audio.src">{{ audio.name }}</option>
+        </select>
+        <h1 style="text-align:center">Salidas de audio</h1>
+        <select (change)="onAudioDeviceChange($event)">
+          <option *ngFor="let device of audioDevices" [value]="device.deviceId">
+            {{ getDeviceLabel(device) }} <!-- Usamos el getter para obtener el nombre o un valor por defecto -->
+          </option>
+        </select>        
+        
+          <br>
+          <button (click)="openFileSelector()">Seleccionar archivo local</button>
+          <br>
+          <input #fileInput type="file" accept="audio/*" (change)="onFileSelected($event)" style="display: none;">
+        
+        <div class="audio-player">
+          <audio #audio controls>
+            <source [src]="selectedAudio" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </ul>
+    </div>
+
+ <!-- Columna 1: Filtro pasa bajos -->
+ <div class="equalizer-column">
+  <h1 style="text-align:center" (click)="selectSlider('lowPass')">Filtro pasa bajos</h1>
+  <div *ngFor="let band of equalizerBands">
+    <label>{{ band.label }}</label>
+    <input type="range" [min]="band.min" [max]="band.max" [step]="band.step" [value]="band.value"
+           [disabled]="activeSlider !== 'lowPass'"
+           (input)="updateBand(band, $event, equalizerBands)">
+    <span>{{ band.value }} dB</span>
+  </div>
+</div>
+
+<div class="equalizer-column">
+  <!-- Título para seleccionar el filtro pasa banda -->
+  <h1 style="text-align:center" (click)="selectSlider('bandPass')">Filtro de frecuencia</h1>
+  <div>
+    <!-- Slider de frecuencia central del filtro pasa banda -->
+    <input type="range" min="20" max="20000" step="1" 
+           [value]="equalizerBandPass.valueFreq"
+           [disabled]="activeSlider !== 'bandPass'" 
+           (input)="updateBandPass($event)">
+    <span>{{ equalizerBandPass.valueFreq }} Hz</span>
+  </div>
+  <!-- Título para seleccionar el filtro pasa banda -->
+  <h1 style="text-align:center" (click)="selectSlider('bandPass')">Ancho de banda</h1>
+  <div>
+    <!-- Slider de ancho de banda del filtro pasa banda -->
+    <input type="range" min="10" max="1000" step="1" 
+           [value]="equalizerBandPass.bandWidth"
+           [disabled]="activeSlider !== 'bandPass'" 
+           (input)="updateBandPassWidth($event)">
+    <span>{{ equalizerBandPass.bandWidth }} Hz</span>
+  </div>
+</div>
+
+
+<!-- Columna 3: Filtro pasa altos -->
+<div class="equalizer-column">
+  <h1 style="text-align:center" (click)="selectSlider('highPass')">Filtro pasa altos</h1>
+  <div *ngFor="let band of equalizerBands2">
+    <label>{{ band.label }}</label>
+    <input type="range" [min]="band.min" [max]="band.max" [step]="band.step" [value]="band.value"
+           [disabled]="activeSlider !== 'highPass'"
+           (input)="updateBand(band, $event, equalizerBands2)">
+    <span>{{ band.value }} dB</span>
+  </div>
+</div>
+</div>
+</div>
+  

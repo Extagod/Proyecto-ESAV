@@ -1,0 +1,18 @@
+.equalizer-column {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+  }
+  
+  .audio-player audio {
+    width: 80%;
+    margin: 20px auto;
+    display: block;
+  }
+  
